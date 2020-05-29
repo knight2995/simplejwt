@@ -3,8 +3,9 @@ package simplejwt
 import (
 	"crypto/hmac"
 	"crypto/sha256"
-	"encoding/hex"
+	b64 "encoding/base64"
 	"fmt"
+	"strings"
 )
 
 type JWT struct {
@@ -32,11 +33,13 @@ func (jwt *JWT) Set(key string, val interface{}) {
 	jwt.claims[key] = val
 
 }
+func (jwt *JWT) SetSecretKey(key string) {
+
+	jwt.secret = key
+}
 
 //make toekn
 func (jwt *JWT) Sign() {
-
-	jwt.secret = "duckbo"
 
 	data := jwt.header.toBase64() + "." + jwt.claims.toBase64()
 
@@ -46,13 +49,19 @@ func (jwt *JWT) Sign() {
 
 	h.Write([]byte(data))
 
-	sha := hex.EncodeToString(h.Sum(nil))
+	//sha := hex.EncodeToString(h.Sum(nil))
 
-	jwt.token = data + "." + sha
+	//fmt.Println((sha))
+	base64Sha := strings.ReplaceAll(b64.URLEncoding.EncodeToString(h.Sum(nil)), "=", "")
+
+	jwt.token = data + "." + base64Sha
 
 }
 
-func (jwt JWT) GetToken() string {
+/*
+	jwt signed token
+*/
+func (jwt JWT) Token() string {
 
 	return jwt.token
 
