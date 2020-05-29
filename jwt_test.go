@@ -6,7 +6,7 @@ import (
 
 func Test(t *testing.T) {
 
-	want := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoi642V67O07KexIn0.2bf453d90ef852453d3dcc8ed310ed3a7a88432599be1ba8b634a76092ae19e3"
+	want := "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoi642V67O07KexIn0.K_RT2Q74UkU9PcyO0xDtOnqIQyWZvhuotjSnYJKuGeM"
 
 	jwt := New()
 
@@ -14,9 +14,15 @@ func Test(t *testing.T) {
 
 	jwt.Set("name", "덕보짱")
 
+	jwt.SetSecretKey("duckbo")
+
 	jwt.Sign()
 
-	if want != jwt.GetToken() {
-		t.Errorf("expected:%s actual:%s", want, jwt.GetToken())
+	if want != jwt.Token() {
+		t.Errorf("\n expected:%s \nactual:%s", want, jwt.Token())
 	}
+}
+
+func RegistedClaimsTest(t *testing.T) {
+
 }
